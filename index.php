@@ -27,10 +27,10 @@ switch ($actual_path) {
     set_layout('Forgot Password', 'common/forgot_password.php');
     break;
   case '/apply':
-    set_layout('Apply', 'common/apply.php');
+    set_layout('Apply', 'candidates/apply.php');
     break;
   case '/admin':
-    set_layout('Admin', 'admin/index.php');
+    set_layout('Admin', 'admin/dashboard.php');
     break;
   default:
     include_once('./resources/views/404.html');
