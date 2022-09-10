@@ -1,13 +1,10 @@
 {
-    "name": "khoa301020/cv-manager",
-    "description": "Intern CV at MDN",
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Resources\\": "resources/"
+            "App\\": "app/"
         }
     },
     "require": {
-        "symfony/routing": "^6.0"
+        "vlucas/phpdotenv": "^5.4"
     }
 }
