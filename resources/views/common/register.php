@@ -23,16 +23,36 @@
       <form action="">
         <div class="mt-4">
           <div>
-            <label class="block" for="email">Username<label>
-                <input type="text" placeholder="Username" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+            <label class="block">Username<label>
+                <input type="text" placeholder="Username" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" required>
+          </div>
+          <div class="mt-4">
+            <label class="block">Full Name<label>
+                <input type="text" placeholder="Full name" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" required>
+          </div>
+          <div class="mt-4">
+            <label class="block">Gender<label>
+                <select class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="dunno">Secret</option>
+                </select>
+          </div>
+          <div class="mt-4">
+            <label class="block">Email<label>
+                <input type="text" placeholder="Email" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" required>
+          </div>
+          <div class="mt-4">
+            <label class="block">Phone Number<label>
+                <input type="text" placeholder="Phone Number" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" pattern="0[0-9]{9}" required>
           </div>
           <div class="mt-4">
             <label class="block">Password<label>
-                <input type="password" placeholder="Password" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                <input type="password" placeholder="Password" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
           </div>
           <div class="mt-4">
             <label class="block">Confirm Password<label>
-                <input type="password" placeholder="Confirm Password" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                <input type="password" placeholder="Confirm Password" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
           </div>
           <div class="flex items-baseline justify-between">
             <button class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900">Register</button>
