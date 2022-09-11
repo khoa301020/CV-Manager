@@ -11,11 +11,12 @@ class UserModel
     $this->db = new Database();
   }
   //Find user by email or username
-  public function findUserByEmailOrUsername($email, $username)
+  public function findUserByEmailOrUsernameOrPhone($email, $username, $phone)
   {
-    $this->db->query('SELECT * FROM user WHERE username = :username OR email = :email');
+    $this->db->query('SELECT * FROM user WHERE username = :username OR email = :email OR phone_number = :phone');
     $this->db->bind(':username', $username);
     $this->db->bind(':email', $email);
+    $this->db->bind(':phone', $phone);
 
     $row = $this->db->single();
 
@@ -28,14 +29,14 @@ class UserModel
   }
 
   //Login user
-  public function login($nameOrEmail, $password)
+  public function login($nameOrEmailOrPhone, $password)
   {
-    $row = $this->findUserByEmailOrUsername($nameOrEmail, $nameOrEmail);
+    $row = $this->findUserByEmailOrUsernameOrPhone($nameOrEmailOrPhone, $nameOrEmailOrPhone, $nameOrEmailOrPhone);
 
     if ($row == false) return false;
 
     $hashedPassword = $row->password;
-    if ($password == $hashedPassword) {
+    if (password_verify($password, $hashedPassword)) {
       return $row;
     } else {
       return false;
@@ -45,13 +46,15 @@ class UserModel
   //Register User
   public function register($data)
   {
-    $this->db->query('INSERT INTO users (usersName, usersEmail, usersUid, usersPwd) 
-    VALUES (:name, :email, :Uid, :password)');
+    $this->db->query('INSERT INTO user (username, name, gender, email, phone_number, password) 
+    VALUES (:username, :name, :gender, :email, :phone_number, :password)');
     //Bind values
-    $this->db->bind(':name', $data['usersName']);
-    $this->db->bind(':email', $data['usersEmail']);
-    $this->db->bind(':Uid', $data['usersUid']);
-    $this->db->bind(':password', $data['usersPwd']);
+    $this->db->bind(':username', $data['username']);
+    $this->db->bind(':name', $data['name']);
+    $this->db->bind(':gender', $data['gender']);
+    $this->db->bind(':email', $data['email']);
+    $this->db->bind(':phone_number', $data['phone_number']);
+    $this->db->bind(':password', $data['password']);
 
     //Execute
     if ($this->db->execute()) {

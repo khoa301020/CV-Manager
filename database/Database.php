@@ -15,9 +15,9 @@ class Database
   private $dbname = 'cvmanager';
 
   //Will be the PDO object
-  private $dbh;
-  private $stmt;
-  private $error;
+  private $dbh;     //Database handler
+  private $stmt;    //Statement
+  private $error;   //Error
 
   public function __construct()
   {
