@@ -2,7 +2,7 @@
 require_once '../../Models/UserModel.php';
 require_once '../../../helpers/session.php';
 
-class User
+class UserController
 {
   private $userModel;
 
@@ -78,11 +78,13 @@ class User
 
   public function createUserSession($user)
   {
+    $_SESSION['user_id'] = $user->user_id;
     $_SESSION['name'] = $user->name;
     if ($user->user_type == 'admin') {
       $_SESSION['admin'] = true;
       redirect("admin");
     } else {
+      $_SESSION['user'] = true;
       redirect("apply");
     }
   }
@@ -96,7 +98,7 @@ class User
   }
 }
 
-$init = new User;
+$init = new UserController;
 
 //Ensure that user is sending a post request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -21,7 +21,7 @@ class Database
 
   public function __construct()
   {
-    //Set DSN
+    //Set Data Source Name
     $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
     $options = array(
       PDO::ATTR_PERSISTENT => true,

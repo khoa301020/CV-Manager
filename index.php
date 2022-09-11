@@ -32,6 +32,12 @@ switch ($actual_path) {
   case '/admin':
     set_layout('Admin', 'admin/dashboard.php');
     break;
+  case  '/success':
+    include_once './resources/views/candidates/success.html';
+    break;
+  case  '/fail':
+    include_once './resources/views/candidates/fail.html';
+    break;
   default:
     include_once('./resources/views/404.html');
 }
