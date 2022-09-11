@@ -27,11 +27,8 @@ The PHP manual is available at [php.net/docs](https://php.net/docs).
 ------
 
 <p align="center">
-  <a href="https://tailwindcss.com/#gh-light-mode-only" target="_blank">
-    <img src="https://raw.githubusercontent.com/tailwindlabs/tailwindcss/raw/master/.github/logo-light.svg" alt="Tailwind CSS" width="350" height="70">
-  </a>
-  <a href="https://tailwindcss.com/#gh-dark-mode-only" target="_blank">
-    <img src="https://raw.githubusercontent.com/tailwindlabs/tailwindcss/raw/master/.github/logo-dark.svg" alt="Tailwind CSS" width="350" height="70">
+  <a href="https://tailwindcss.com/" target="_blank">
+    <img src="https://raw.githubusercontent.com/tailwindlabs/tailwindcss/master/.github/logo-dark.svg" alt="Tailwind CSS" width="350" height="70">
   </a>
 </p>
 
