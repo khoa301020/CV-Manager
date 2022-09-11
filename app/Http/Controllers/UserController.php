@@ -19,8 +19,8 @@ class User
       'password' => trim($_POST['password'])
     ];
 
-    //Check for user/email
-    if ($this->userModel->findUserByEmailOrUsernameOrPhone($data['username'], $data['email'], $data['phone_number'])) {
+    //Check for user/email/phone
+    if ($this->userModel->findUserByEmailOrUsernameOrPhone($data['username'], $data['username'], $data['username'])) {
       //User Found
       $loggedInUser = $this->userModel->login($data['username'], $data['password']);
       if ($loggedInUser) {
@@ -79,7 +79,6 @@ class User
   public function createUserSession($user)
   {
     $_SESSION['name'] = $user->name;
-    // $_SESSION['usersEmail'] = $user->usersEmail;
     if ($user->user_type == 'admin') {
       $_SESSION['admin'] = true;
       redirect("admin");

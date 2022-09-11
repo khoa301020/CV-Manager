@@ -14,7 +14,7 @@ class Database
   private $pass = '';
   private $dbname = 'cvmanager';
 
-  //Will be the PDO object
+  // PDO object
   private $dbh;     //Database handler
   private $stmt;    //Statement
   private $error;   //Error

@@ -3,7 +3,8 @@
 function set_layout($title, $body)
 {
   $title = $title;
-  include_once('./resources/views/layouts/header.tpl.php');
-  include_once('./resources/views/' . $body);
-  include_once('./resources/views/layouts/footer.tpl.php');
+  include('./resources/views/layouts/header.tpl.php');
+  include('./helpers/session.php');
+  include('./resources/views/' . $body);
+  include('./resources/views/layouts/footer.tpl.php');
 }
