@@ -45,7 +45,7 @@ if ((new CVModel)->checkIfPendingCVExists($_SESSION['user_id'])) : ?>
       <div class=" flex-auto float-right">
         <a href="../../../app/Http/Controllers/UserController.php?q=logout" class="text-sm text-red-600 hover:underline">Logout</a>
       </div>
-      <form action="../../../app/Http/Controllers/CVController.php" method="POST">
+      <form action="../../../app/Http/Controllers/CVController.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="type" value="sendCV">
 
         <div class="mt-4">
@@ -60,10 +60,11 @@ if ((new CVModel)->checkIfPendingCVExists($_SESSION['user_id'])) : ?>
           <div>
             <label class="block">CV<label>
                 <input type="file" name="cv_file" placeholder="CV" class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" required>
+                <div class="text-xs text-red-600">*Max size 4MB</div>
           </div>
         </div>
         <div class="flex items-baseline justify-between">
-          <button class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900" style="margin-left: auto; margin-right: auto;">Submit</button>
+          <button type="submit" class="px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-900" style="margin-left: auto; margin-right: auto;">Submit</button>
         </div>
       </form>
     </div>

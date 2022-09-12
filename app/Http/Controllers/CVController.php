@@ -1,6 +1,7 @@
 <?php
 require_once '../../Models/CVModel.php';
 require_once '../../../helpers/session.php';
+require_once './MailController.php';
 
 class CVController
 {
@@ -17,13 +18,27 @@ class CVController
     $data = [
       'user_id' => trim($_SESSION['user_id']),
       'position_id' => trim($_POST['position']),
-      'cv_file' => trim($_POST['cv_file']),
+      'cv_file' => trim($this->CVModel->saveCVFile()),
     ];
 
     //Send CV
     if ($this->CVModel->sendCV($data)) {
-      flash("CV sent successfully", "alert alert-success");
-      redirect("success");
+      //Automail data
+      $automailData = [
+        'userEmail' => $_SESSION['userEmail'],
+        'subject' => "[Automail] CV received",
+        'message' => "Your CV has been received. We will contact you soon.",
+      ];
+
+      //Send Received Email
+      $mailController = new MailController();
+      if ($mailController->sendMail($automailData)) {
+        flash("CV sent successfully");
+        redirect("success");
+      } else {
+        flash("CV sent successfully but email not sent");
+        redirect("fail");
+      }
     } else {
       flash("Something went wrong");
       redirect("fail");
@@ -46,6 +61,13 @@ class CVController
       redirect("apply");
     }
   }
+
+  // Show all CV by status
+  public function showCVByStatus($status)
+  {
+    $data = $this->CVModel->showCVByStatus($status);
+    return $data;
+  }
 }
 
 $init = new CVController;
@@ -56,16 +78,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     case 'sendCV':
       $init->sendCV();
       break;
+    case 'acceptCV':
+      $init->approveCV($_POST['id']);
+      break;
+    default:
+      redirect("");
+  }
+} else {
+  switch ($_GET['status']) {
+    case 'approveCV':
+      $init->approveCV($_GET['id']);
+      break;
     default:
       redirect("");
   }
 }
-// else {
-//   switch ($_GET['q']) {
-//     case 'approveCV':
-//       $init->approveCV($_GET['id']);
-//       break;
-//     default:
-//       redirect("");
-//   }
-// }

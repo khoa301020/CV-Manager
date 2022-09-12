@@ -80,6 +80,7 @@ class UserController
   {
     $_SESSION['user_id'] = $user->user_id;
     $_SESSION['name'] = $user->name;
+    $_SESSION['userEmail'] = $user->email;
     if ($user->user_type == 'admin') {
       $_SESSION['admin'] = true;
       redirect("admin");

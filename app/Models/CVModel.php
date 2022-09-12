@@ -23,7 +23,18 @@ class CVModel
     return $results;
   }
 
-  //Get all CV from user
+  //Get CVs by status
+  public function getCVsByStatus($status)
+  {
+    $this->db->query('SELECT * FROM cv WHERE review_status = :status');
+    $this->db->bind(':status', $status);
+
+    $results = $this->db->resultSet();
+
+    return $results;
+  }
+
+  //Get all CVs from user
   public function getAllCVsFromUser($username)
   {
     $this->db->query('SELECT * FROM cv WHERE username = :username');
@@ -32,6 +43,14 @@ class CVModel
     $results = $this->db->resultSet();
 
     return $results;
+  }
+
+  //Get CVs count
+  public function getCVCount()
+  {
+    $this->db->query('SELECT * FROM cv');
+
+    return $this->db->rowCount();
   }
 
   //Check if CV has review_status = "Pending" exists
@@ -86,5 +105,42 @@ class CVModel
     $this->db->bind(':cv_id', $cv_id);
 
     $this->db->execute();
+  }
+
+  // Save CV  file in resources/cv
+  public function saveCVFile()
+  {
+    $target_dir = "../../../resources/cv/";
+    $target_file = $target_dir . basename($_FILES["cv_file"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    // Check file size
+    if ($_FILES["cv_file"]["size"] > 4000000) {
+      flash("Sorry, your file is too large.");
+      $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if (
+      $imageFileType != "jpg" && $imageFileType != "jpeg" && $imageFileType != "png"
+    ) {
+      flash("Sorry, only JPG, JPEG & PNG files are allowed.");
+      $uploadOk = 0;
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+      flash("Sorry, your file was not uploaded.");
+      // if everything is ok, try to upload file
+    } else {
+      if (move_uploaded_file($_FILES["cv_file"]["tmp_name"], $target_file)) {
+        flash("The file " . htmlspecialchars(basename($_FILES["cv_file"]["name"])) . " has been uploaded.");
+        flash($target_file);
+        return $target_file;
+      } else {
+        flash("Sorry, there was an error uploading your file.");
+      }
+    }
   }
 }
