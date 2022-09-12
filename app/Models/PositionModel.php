@@ -16,4 +16,13 @@ class PositionModel
     $results = $this->db->resultSet();
     return $results;
   }
+
+  public function getPositionById(int $id)
+  {
+    $this->db->query('SELECT * FROM position WHERE position_id = :id');
+    $this->db->bind(':id', $id);
+    $result = $this->db->single();
+
+    return $result;
+  }
 }

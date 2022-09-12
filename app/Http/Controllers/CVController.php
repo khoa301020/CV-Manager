@@ -1,7 +1,8 @@
 <?php
-require_once '../../Models/CVModel.php';
-require_once '../../../helpers/session.php';
 require_once './MailController.php';
+require_once '../../Models/CVModel.php';
+require_once '../../Models/InterviewModel.php';
+require_once '../../../helpers/session.php';
 
 class CVController
 {
@@ -10,6 +11,7 @@ class CVController
   public function __construct()
   {
     $this->CVModel = new CVModel();
+    $this->InterviewModel = new InterviewModel();
   }
 
   public function sendCV()
@@ -48,18 +50,49 @@ class CVController
   //Approve CV
   public function approveCV($id)
   {
-    //Init data
-    $data = [
-      'id' => $id,
-      'review_status' => "Approved"
+    $this->CVModel->approveCV($id);
+
+    //Create interview
+    $this->InterviewModel->createInterview($id);
+
+    //Create invitation
+    $invitationData = [
+      'interview_id' => $this->InterviewModel->getLastInsertedInterviewID(),
+      'user_id' => $this->CVModel->findUserIdByCVId($id),
+      'title' => "Interview Invitation",
+      'content' => "You have been invited to an interview. Please accept 6 hours before the destinated time.",
     ];
 
-    //Approve CV
-    if ($this->CVModel->approveCV($data)) {
-      redirect("apply");
-    } else {
-      redirect("apply");
-    }
+    $this->InterviewModel->createInvitation($invitationData);
+
+    //Send automail
+    $automailData = [
+      'userEmail' => $this->CVModel->findUserEmailByCVId($id),
+      'subject' => "[Automail] CV approved",
+      'message' => "Your CV has been approved. Please confirm your interview time within 2 days.",
+    ];
+    $mailController = new MailController();
+    $mailController->sendMail($automailData);
+
+    redirect("admin");
+  }
+
+  //Reject CV
+  public function rejectCV($id)
+  {
+    $this->CVModel->rejectCV($id);
+
+    //Send automail
+    $automailData = [
+      'userEmail' => $this->CVModel->findUserEmailByCVId($id),
+      'subject' => "[Automail] CV rejected",
+      'message' => "Your CV has been rejected. Please try again later.",
+    ];
+
+    $mailController = new MailController();
+    $mailController->sendMail($automailData);
+
+    redirect("admin");
   }
 
   // Show all CV by status
@@ -78,16 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     case 'sendCV':
       $init->sendCV();
       break;
-    case 'acceptCV':
+    case 'approveCV':
       $init->approveCV($_POST['id']);
       break;
-    default:
-      redirect("");
-  }
-} else {
-  switch ($_GET['status']) {
-    case 'approveCV':
-      $init->approveCV($_GET['id']);
+    case 'rejectCV':
+      $init->rejectCV($_POST['id']);
       break;
     default:
       redirect("");

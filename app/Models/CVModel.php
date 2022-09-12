@@ -1,16 +1,13 @@
 <?php
 require_once 'C:/xampp/htdocs/CV-Manager/database/Database.php';
-require_once 'C:/xampp/htdocs/CV-Manager/app/Models/InterviewModel.php';
 
 class CVModel
 {
   private $db;
-  private $interviewModel;
 
   public function __construct()
   {
     $this->db = new Database();
-    $this->interviewModel = new InterviewModel();
   }
 
   //Get all CVs
@@ -93,9 +90,6 @@ class CVModel
     $this->db->bind(':cv_id', $cv_id);
 
     $this->db->execute();
-
-    // Create interview
-    $this->interviewModel->createInterview($cv_id);
   }
 
   //Set review status to "Rejected" and handled_at to current time
@@ -105,6 +99,28 @@ class CVModel
     $this->db->bind(':cv_id', $cv_id);
 
     $this->db->execute();
+  }
+
+  //Find user email by CV id
+  public function findUserEmailByCVId($cv_id)
+  {
+    $this->db->query('SELECT * FROM user WHERE user_id = (SELECT user_id FROM cv WHERE cv_id = :cv_id)');
+    $this->db->bind(':cv_id', $cv_id);
+
+    $result = $this->db->single();
+
+    return $result->email;
+  }
+
+  //Find user email by CV id
+  public function findUserIdByCVId($cv_id)
+  {
+    $this->db->query('SELECT * FROM user WHERE user_id = (SELECT user_id FROM cv WHERE cv_id = :cv_id)');
+    $this->db->bind(':cv_id', $cv_id);
+
+    $result = $this->db->single();
+
+    return $result->user_id;
   }
 
   // Save CV  file in resources/cv

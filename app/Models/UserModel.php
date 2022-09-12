@@ -1,5 +1,5 @@
-<!-- Create User model known that user has username, password, name, email, phonenumber, gender -->
 <?php
+
 require_once 'C:/xampp/htdocs/CV-Manager/database/Database.php';
 
 class UserModel
@@ -26,6 +26,17 @@ class UserModel
     } else {
       return false;
     }
+  }
+
+  //Get user by id
+  public function getUserById($id)
+  {
+    $this->db->query('SELECT * FROM user WHERE user_id = :id');
+    $this->db->bind(':id', $id);
+
+    $result = $this->db->single();
+
+    return $result;
   }
 
   //Login user
