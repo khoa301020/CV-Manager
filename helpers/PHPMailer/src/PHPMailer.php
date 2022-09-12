@@ -389,6 +389,7 @@ class PHPMailer
      * SMTP class debug output mode.
      * Debug output level.
      * Options:
+     *
      * @see SMTP::DEBUG_OFF: No output
      * @see SMTP::DEBUG_CLIENT: Client messages
      * @see SMTP::DEBUG_SERVER: Client and server messages
@@ -909,7 +910,9 @@ class PHPMailer
         switch ($this->Debugoutput) {
             case 'error_log':
                 //Don't output, just log
-                /** @noinspection ForgottenDebugOutputInspection */
+                /**
+     * @noinspection ForgottenDebugOutputInspection
+*/
                 error_log($str);
                 break;
             case 'html':
@@ -926,9 +929,9 @@ class PHPMailer
                 $str = preg_replace('/\r\n|\r/m', "\n", $str);
                 echo gmdate('Y-m-d H:i:s'),
                 "\t",
-                    //Trim trailing space
+                //Trim trailing space
                 trim(
-                    //Indent for readability, except for trailing break
+                //Indent for readability, except for trailing break
                     str_replace(
                         "\n",
                         "\n                   \t                  ",
@@ -1207,15 +1210,15 @@ class PHPMailer
             imap_errors();
             foreach ($list as $address) {
                 if (
-                    '.SYNTAX-ERROR.' !== $address->host &&
-                    static::validateAddress($address->mailbox . '@' . $address->host)
+                    '.SYNTAX-ERROR.' !== $address->host
+                    && static::validateAddress($address->mailbox . '@' . $address->host)
                 ) {
                     //Decode the name part if it's present and encoded
                     if (
-                        property_exists($address, 'personal') &&
+                        property_exists($address, 'personal')
                         //Check for a Mbstring constant rather than using extension_loaded, which is sometimes disabled
-                        defined('MB_CASE_UPPER') &&
-                        preg_match('/^=\?.*\?=$/s', $address->personal)
+                        && defined('MB_CASE_UPPER')
+                        && preg_match('/^=\?.*\?=$/s', $address->personal)
                     ) {
                         $origCharset = mb_internal_encoding();
                         mb_internal_encoding($charset);
@@ -1447,9 +1450,9 @@ class PHPMailer
         //Verify we have required functions, CharSet, and at-sign.
         $pos = strrpos($address, '@');
         if (
-            !empty($this->CharSet) &&
-            false !== $pos &&
-            static::idnSupported()
+            !empty($this->CharSet)
+            && false !== $pos
+            && static::idnSupported()
         ) {
             $domain = substr($address, ++$pos);
             //Verify CharSet string is a valid one, and domain properly encoded in this CharSet.
@@ -1533,7 +1536,7 @@ class PHPMailer
         if (
             'mail' === $this->Mailer
             && ((\PHP_VERSION_ID >= 70000 && \PHP_VERSION_ID < 70017)
-                || (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70103))
+            || (\PHP_VERSION_ID >= 70100 && \PHP_VERSION_ID < 70103))
             && ini_get('mail.add_x_header') === '1'
             && stripos(PHP_OS, 'WIN') === 0
         ) {
@@ -1617,11 +1620,9 @@ class PHPMailer
                 !empty($this->DKIM_domain)
                 && !empty($this->DKIM_selector)
                 && (!empty($this->DKIM_private_string)
-                    || (!empty($this->DKIM_private)
-                        && static::isPermittedPath($this->DKIM_private)
-                        && file_exists($this->DKIM_private)
-                    )
-                )
+                || (!empty($this->DKIM_private)
+                && static::isPermittedPath($this->DKIM_private)
+                && file_exists($this->DKIM_private)                ))
             ) {
                 $header_dkim = $this->DKIM_Add(
                     $this->MIMEHeader . $this->mailHeader,
@@ -2154,10 +2155,10 @@ class PHPMailer
             $host = $hostinfo[2];
             $port = $this->Port;
             if (
-                array_key_exists(3, $hostinfo) &&
-                is_numeric($hostinfo[3]) &&
-                $hostinfo[3] > 0 &&
-                $hostinfo[3] < 65536
+                array_key_exists(3, $hostinfo)
+                && is_numeric($hostinfo[3])
+                && $hostinfo[3] > 0
+                && $hostinfo[3] < 65536
             ) {
                 $port = (int) $hostinfo[3];
             }
@@ -2347,9 +2348,9 @@ class PHPMailer
                             '/^\$PHPMAILER_LANG\[\'([a-z\d_]+)\'\]\s*=\s*(["\'])(.+)*?\2;/',
                             $line,
                             $matches
-                        ) &&
+                        )
                         //Ignore unknown translation keys
-                        array_key_exists($matches[1], $PHPMAILER_LANG)
+                        && array_key_exists($matches[1], $PHPMAILER_LANG)
                     ) {
                         //Overwrite language-specific strings so we'll never have missing translation keys.
                         $PHPMAILER_LANG[$matches[1]] = (string)$matches[3];
@@ -2622,9 +2623,7 @@ class PHPMailer
 
         //sendmail and mail() extract Bcc from the header before sending
         if (
-            (
-                'sendmail' === $this->Mailer || 'qmail' === $this->Mailer || 'mail' === $this->Mailer
-            )
+            (            'sendmail' === $this->Mailer || 'qmail' === $this->Mailer || 'mail' === $this->Mailer)
             && count($this->bcc) > 0
         ) {
             $result .= $this->addrAppend('Bcc', $this->bcc);
@@ -2642,8 +2641,8 @@ class PHPMailer
         //Only allow a custom message ID if it conforms to RFC 5322 section 3.6.4
         //https://tools.ietf.org/html/rfc5322#section-3.6.4
         if (
-            '' !== $this->MessageID &&
-            preg_match(
+            '' !== $this->MessageID
+            && preg_match(
                 '/^<((([a-z\d!#$%&\'*+\/=?^_`{|}~-]+(\.[a-z\d!#$%&\'*+\/=?^_`{|}~-]+)*)' .
                 '|("(([\x01-\x08\x0B\x0C\x0E-\x1F\x7F]|[\x21\x23-\x5B\x5D-\x7E])' .
                 '|(\\[\x01-\x09\x0B\x0C\x0E-\x7F]))*"))@(([a-z\d!#$%&\'*+\/=?^_`{|}~-]+' .
@@ -2769,7 +2768,9 @@ class PHPMailer
                 //Do nothing
             }
         } elseif (function_exists('openssl_random_pseudo_bytes')) {
-            /** @noinspection CryptographicallySecureRandomnessInspection */
+            /**
+ * @noinspection CryptographicallySecureRandomnessInspection
+*/
             $bytes = openssl_random_pseudo_bytes($len);
         }
         if ($bytes === '') {
@@ -3459,7 +3460,7 @@ class PHPMailer
             /* @noinspection PhpMissingBreakStatementInspection */
             case 'comment':
                 $matchcount = preg_match_all('/[()"]/', $str, $matches);
-            //fallthrough
+                //fallthrough
             case 'text':
             default:
                 $matchcount += preg_match_all('/[\000-\010\013\014\016-\037\177-\377]/', $str, $matches);
@@ -3636,7 +3637,7 @@ class PHPMailer
             /* @noinspection PhpMissingBreakStatementInspection */
             case 'comment':
                 $pattern = '\(\)"';
-            /* Intentional fall through */
+                /* Intentional fall through */
             case 'text':
             default:
                 //RFC 2047 section 5.1
@@ -3738,7 +3739,6 @@ class PHPMailer
      *
      * @return bool True on successfully adding an attachment
      * @throws Exception
-     *
      */
     public function addEmbeddedImage(
         $path,
@@ -4151,7 +4151,7 @@ class PHPMailer
     /**
      * Build an error message starting with a generic one and adding details if possible.
      *
-     * @param string $base_key
+     * @param  string $base_key
      * @return string
      */
     private function getSmtpErrorMessage($base_key)
@@ -4230,10 +4230,10 @@ class PHPMailer
      * Converts data-uri images into embedded attachments.
      * If you don't want to apply these transformations to your HTML, just set Body and AltBody directly.
      *
-     * @param string        $message  HTML message string
-     * @param string        $basedir  Absolute path to a base directory to prepend to relative paths to images
-     * @param bool|callable $advanced Whether to use the internal HTML to text converter
-     *                                or your own custom converter
+     * @param  string        $message  HTML message string
+     * @param  string        $basedir  Absolute path to a base directory to prepend to relative paths to images
+     * @param  bool|callable $advanced Whether to use the internal HTML to text converter
+     *                                 or your own custom converter
      * @return string The transformed message body
      *
      * @throws Exception
@@ -4282,7 +4282,7 @@ class PHPMailer
                     continue;
                 }
                 if (
-                    //Only process relative URLs if a basedir is provided (i.e. no absolute local paths)
+//Only process relative URLs if a basedir is provided (i.e. no absolute local paths)
                     !empty($basedir)
                     //Ignore URLs containing parent dir traversal (..)
                     && (strpos($url, '..') === false)

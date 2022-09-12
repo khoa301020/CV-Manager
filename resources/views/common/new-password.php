@@ -1,11 +1,11 @@
 <?php
 if (empty($_GET['selector']) || empty($_GET['validator'])) {
-  echo '<p>Could not validate your request!</p>';
+    echo '<p>Could not validate your request!</p>';
 } else {
-  $selector = $_GET['selector'];
-  $validator = $_GET['validator'];
+    $selector = $_GET['selector'];
+    $validator = $_GET['validator'];
 
-  if (ctype_xdigit($selector) && ctype_xdigit($validator)) : ?>
+    if (ctype_xdigit($selector) && ctype_xdigit($validator)) : ?>
     <div class="flex items-center justify-center min-h-screen bg-gray-100">
       <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg">
         <div class="flex justify-center mb-4">
@@ -38,7 +38,7 @@ if (empty($_GET['selector']) || empty($_GET['validator'])) {
       </div>
     </div>
 
-  <?php else : ?>
+    <?php else : ?>
     <p>Could not validate your request!</p>
-<?php endif;
+    <?php endif;
 } ?>

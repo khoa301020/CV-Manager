@@ -1,4 +1,5 @@
 <?php
+
 require_once './MailController.php';
 require_once '../../Models/CVModel.php';
 require_once '../../Models/InterviewModel.php';
@@ -6,118 +7,118 @@ require_once '../../../helpers/session.php';
 
 class CVController
 {
-  private $userModel;
+    private $userModel;
 
-  public function __construct()
-  {
-    $this->CVModel = new CVModel();
-    $this->InterviewModel = new InterviewModel();
-  }
-
-  public function sendCV()
-  {
-    //Init data
-    $data = [
-      'user_id' => trim($_SESSION['user_id']),
-      'position_id' => trim($_POST['position']),
-      'cv_file' => trim($this->CVModel->saveCVFile()),
-    ];
-
-    //Send CV
-    if ($this->CVModel->sendCV($data)) {
-      //Automail data
-      $automailData = [
-        'userEmail' => $_SESSION['userEmail'],
-        'subject' => "[Automail] CV received",
-        'message' => "Your CV has been received. We will contact you soon.",
-      ];
-
-      //Send Received Email
-      $mailController = new MailController();
-      if ($mailController->sendMail($automailData)) {
-        flash("CV sent successfully");
-        redirect("success");
-      } else {
-        flash("CV sent successfully but email not sent");
-        redirect("fail");
-      }
-    } else {
-      flash("Something went wrong");
-      redirect("fail");
+    public function __construct()
+    {
+        $this->CVModel = new CVModel();
+        $this->InterviewModel = new InterviewModel();
     }
-  }
 
-  //Approve CV
-  public function approveCV($id)
-  {
-    $this->CVModel->approveCV($id);
+    public function sendCV()
+    {
+        //Init data
+        $data = [
+        'user_id' => trim($_SESSION['user_id']),
+        'position_id' => trim($_POST['position']),
+        'cv_file' => trim($this->CVModel->saveCVFile()),
+        ];
 
-    //Create interview
-    $this->InterviewModel->createInterview($id);
+        //Send CV
+        if ($this->CVModel->sendCV($data)) {
+            //Automail data
+            $automailData = [
+            'userEmail' => $_SESSION['userEmail'],
+            'subject' => "[Automail] CV received",
+            'message' => "Your CV has been received. We will contact you soon.",
+            ];
 
-    //Create invitation
-    $invitationData = [
-      'interview_id' => $this->InterviewModel->getLastInsertedInterviewID(),
-      'user_id' => $this->CVModel->findUserIdByCVId($id),
-      'title' => "Interview Invitation",
-      'content' => "You have been invited to an interview. Please accept 6 hours before the destinated time.",
-    ];
+            //Send Received Email
+            $mailController = new MailController();
+            if ($mailController->sendMail($automailData)) {
+                flash("CV sent successfully");
+                redirect("success");
+            } else {
+                flash("CV sent successfully but email not sent");
+                redirect("fail");
+            }
+        } else {
+            flash("Something went wrong");
+            redirect("fail");
+        }
+    }
 
-    $this->InterviewModel->createInvitation($invitationData);
+    //Approve CV
+    public function approveCV($id)
+    {
+        $this->CVModel->approveCV($id);
 
-    //Send automail
-    $automailData = [
-      'userEmail' => $this->CVModel->findUserEmailByCVId($id),
-      'subject' => "[Automail] CV approved",
-      'message' => "Your CV has been approved. Please confirm your interview time within 2 days.",
-    ];
-    $mailController = new MailController();
-    $mailController->sendMail($automailData);
+        //Create interview
+        $this->InterviewModel->createInterview($id);
 
-    redirect("admin");
-  }
+        //Create invitation
+        $invitationData = [
+        'interview_id' => $this->InterviewModel->getLastInsertedInterviewID(),
+        'user_id' => $this->CVModel->findUserIdByCVId($id),
+        'title' => "Interview Invitation",
+        'content' => "You have been invited to an interview. Please accept 6 hours before the destinated time.",
+        ];
 
-  //Reject CV
-  public function rejectCV($id)
-  {
-    $this->CVModel->rejectCV($id);
+        $this->InterviewModel->createInvitation($invitationData);
 
-    //Send automail
-    $automailData = [
-      'userEmail' => $this->CVModel->findUserEmailByCVId($id),
-      'subject' => "[Automail] CV rejected",
-      'message' => "Your CV has been rejected. Please try again later.",
-    ];
+        //Send automail
+        $automailData = [
+        'userEmail' => $this->CVModel->findUserEmailByCVId($id),
+        'subject' => "[Automail] CV approved",
+        'message' => "Your CV has been approved. Please confirm your interview time within 2 days.",
+        ];
+        $mailController = new MailController();
+        $mailController->sendMail($automailData);
 
-    $mailController = new MailController();
-    $mailController->sendMail($automailData);
+        redirect("admin");
+    }
 
-    redirect("admin");
-  }
+    //Reject CV
+    public function rejectCV($id)
+    {
+        $this->CVModel->rejectCV($id);
 
-  // Show all CV by status
-  public function showCVByStatus($status)
-  {
-    $data = $this->CVModel->showCVByStatus($status);
-    return $data;
-  }
+        //Send automail
+        $automailData = [
+        'userEmail' => $this->CVModel->findUserEmailByCVId($id),
+        'subject' => "[Automail] CV rejected",
+        'message' => "Your CV has been rejected. Please try again later.",
+        ];
+
+        $mailController = new MailController();
+        $mailController->sendMail($automailData);
+
+        redirect("admin");
+    }
+
+    // Show all CV by status
+    public function showCVByStatus($status)
+    {
+        $data = $this->CVModel->showCVByStatus($status);
+        return $data;
+    }
 }
 
-$init = new CVController;
+$init = new CVController();
 
 //Ensure that user is sending a post request
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  switch ($_POST['type']) {
-    case 'sendCV':
-      $init->sendCV();
-      break;
-    case 'approveCV':
-      $init->approveCV($_POST['id']);
-      break;
-    case 'rejectCV':
-      $init->rejectCV($_POST['id']);
-      break;
-    default:
-      redirect("");
-  }
+    switch ($_POST['type']) {
+        case 'sendCV':
+            $init->sendCV();
+            break;
+        case 'approveCV':
+            $init->approveCV($_POST['id']);
+            break;
+        case 'rejectCV':
+            $init->rejectCV($_POST['id']);
+            break;
+        default:
+            redirect("");
+    }
 }

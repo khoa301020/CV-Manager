@@ -1,4 +1,5 @@
 <?php
+
 /*
     * PDO Database Class
     * Connect to database
@@ -9,90 +10,90 @@
 
 class Database
 {
-  private $host = 'localhost';
-  private $user = 'root';
-  private $pass = '';
-  private $dbname = 'cvmanager';
+    private $host = 'localhost';
+    private $user = 'root';
+    private $pass = '';
+    private $dbname = 'cvmanager';
 
-  // PDO object
-  private $dbh;     //Database handler
-  private $stmt;    //Statement
-  private $error;   //Error
+    // PDO object
+    private $dbh;     //Database handler
+    private $stmt;    //Statement
+    private $error;   //Error
 
-  public function __construct()
-  {
-    //Set Data Source Name
-    $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
-    $options = array(
-      PDO::ATTR_PERSISTENT => true,
-      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    );
+    public function __construct()
+    {
+        //Set Data Source Name
+        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+        $options = array(
+        PDO::ATTR_PERSISTENT => true,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        );
 
-    //Create PDO instance
-    try {
-      $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
-    } catch (PDOException $e) {
-      $this->error = $e->getMessage();
-      echo $this->error;
+        //Create PDO instance
+        try {
+            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
+        } catch (PDOException $e) {
+            $this->error = $e->getMessage();
+            echo $this->error;
+        }
     }
-  }
 
-  //Prepare statement with query
-  public function query($sql)
-  {
-    $this->stmt = $this->dbh->prepare($sql);
-  }
-
-  //Bind values, to prepared statement using named parameters
-  public function bind($param, $value, $type = null)
-  {
-    if (is_null($type)) {
-      switch (true) {
-        case is_int($value):
-          $type = PDO::PARAM_INT;
-          break;
-        case is_bool($value):
-          $type = PDO::PARAM_BOOL;
-          break;
-        case is_null($value):
-          $type = PDO::PARAM_NULL;
-          break;
-        default:
-          $type = PDO::PARAM_STR;
-      }
+    //Prepare statement with query
+    public function query($sql)
+    {
+        $this->stmt = $this->dbh->prepare($sql);
     }
-    $this->stmt->bindValue($param, $value, $type);
-  }
 
-  //Execute the prepared statement
-  public function execute()
-  {
-    return $this->stmt->execute();
-  }
+    //Bind values, to prepared statement using named parameters
+    public function bind($param, $value, $type = null)
+    {
+        if (is_null($type)) {
+            switch (true) {
+                case is_int($value):
+                    $type = PDO::PARAM_INT;
+                    break;
+                case is_bool($value):
+                    $type = PDO::PARAM_BOOL;
+                    break;
+                case is_null($value):
+                    $type = PDO::PARAM_NULL;
+                    break;
+                default:
+                    $type = PDO::PARAM_STR;
+            }
+        }
+        $this->stmt->bindValue($param, $value, $type);
+    }
 
-  //Return multiple records
-  public function resultSet()
-  {
-    $this->execute();
-    return $this->stmt->fetchAll(PDO::FETCH_OBJ);
-  }
+    //Execute the prepared statement
+    public function execute()
+    {
+        return $this->stmt->execute();
+    }
 
-  //Return a single record
-  public function single()
-  {
-    $this->execute();
-    return $this->stmt->fetch(PDO::FETCH_OBJ);
-  }
+    //Return multiple records
+    public function resultSet()
+    {
+        $this->execute();
+        return $this->stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
-  //Get row count
-  public function rowCount()
-  {
-    return $this->stmt->rowCount();
-  }
+    //Return a single record
+    public function single()
+    {
+        $this->execute();
+        return $this->stmt->fetch(PDO::FETCH_OBJ);
+    }
 
-  //Get last inserted ID
-  public function lastInsertId()
-  {
-    return $this->dbh->lastInsertId();
-  }
+    //Get row count
+    public function rowCount()
+    {
+        return $this->stmt->rowCount();
+    }
+
+    //Get last inserted ID
+    public function lastInsertId()
+    {
+        return $this->dbh->lastInsertId();
+    }
 }

@@ -3,17 +3,18 @@
 /**
  * PHPMailer - PHP email creation and transport class.
  * PHP Version 5.5
- * @package PHPMailer
- * @see https://github.com/PHPMailer/PHPMailer/ The PHPMailer GitHub project
- * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
- * @author Jim Jagielski (jimjag) <jimjag@gmail.com>
- * @author Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
- * @author Brent R. Matzelle (original founder)
+ *
+ * @package   PHPMailer
+ * @see       https://github.com/PHPMailer/PHPMailer/ The PHPMailer GitHub project
+ * @author    Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
+ * @author    Jim Jagielski (jimjag) <jimjag@gmail.com>
+ * @author    Andy Prevost (codeworxtech) <codeworxtech@users.sourceforge.net>
+ * @author    Brent R. Matzelle (original founder)
  * @copyright 2012 - 2020 Marcus Bointon
  * @copyright 2010 - 2012 Jim Jagielski
  * @copyright 2004 - 2009 Andy Prevost
- * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
- * @note This program is distributed in the hope that it will be useful - WITHOUT
+ * @license   http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ * @note      This program is distributed in the hope that it will be useful - WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
@@ -36,6 +37,7 @@ namespace PHPMailer\PHPMailer;
  * Aliases for League Provider Classes
  * Make sure you have added these to your composer.json and run `composer install`
  * Plenty to choose from here:
+ *
  * @see http://oauth2-client.thephpleague.com/providers/thirdparty/
  */
 //@see https://github.com/thephpleague/oauth2-google
@@ -113,9 +115,9 @@ switch ($providerName) {
     case 'Google':
         $provider = new Google($params);
         $options = [
-            'scope' => [
-                'https://mail.google.com/'
-            ]
+        'scope' => [
+            'https://mail.google.com/'
+        ]
         ];
         break;
     case 'Yahoo':
@@ -124,10 +126,10 @@ switch ($providerName) {
     case 'Microsoft':
         $provider = new Microsoft($params);
         $options = [
-            'scope' => [
-                'wl.imap',
-                'wl.offline_access'
-            ]
+        'scope' => [
+            'wl.imap',
+            'wl.offline_access'
+        ]
         ];
         break;
 }

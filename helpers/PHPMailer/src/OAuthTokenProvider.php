@@ -25,11 +25,11 @@ namespace PHPMailer\PHPMailer;
  * OAuthTokenProvider - OAuth2 token provider interface.
  * Provides base64 encoded OAuth2 auth strings for SMTP authentication.
  *
- * @see     OAuth
- * @see     SMTP::authenticate()
+ * @see OAuth
+ * @see SMTP::authenticate()
  *
- * @author  Peter Scopes (pdscopes)
- * @author  Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
+ * @author Peter Scopes (pdscopes)
+ * @author Marcus Bointon (Synchro/coolbru) <phpmailer@synchromedia.co.uk>
  */
 interface OAuthTokenProvider
 {

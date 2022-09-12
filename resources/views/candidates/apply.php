@@ -1,6 +1,6 @@
 <?php
 if (!isset($_SESSION['user'])) {
-  redirect("");
+    redirect("");
 }
 
 //Check Pending
@@ -8,7 +8,7 @@ if (!isset($_SESSION['user'])) {
 require_once './app/Models/CVModel.php';
 require_once './app/Models/InterviewModel.php';
 
-if ((new CVModel)->checkIfPendingCVExists($_SESSION['user_id'])) : ?>
+if ((new CVModel())->checkIfPendingCVExists($_SESSION['user_id'])) : ?>
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg">
       <div class="flex justify-center mb-4">
@@ -25,8 +25,7 @@ if ((new CVModel)->checkIfPendingCVExists($_SESSION['user_id'])) : ?>
     </div>
   </div>
 
-<?php elseif ((new InterviewModel)->checkInterviewInvitationStatus($_SESSION['user_id'], "Accepted")) : ?>
-
+<?php elseif ((new InterviewModel())->checkInterviewInvitationStatus($_SESSION['user_id'], "Accepted")) : ?>
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg">
       <div class="flex justify-center mb-4">
@@ -43,11 +42,10 @@ if ((new CVModel)->checkIfPendingCVExists($_SESSION['user_id'])) : ?>
     </div>
   </div>
 
-<?php elseif ((new InterviewModel)->checkInterviewInvitationStatus($_SESSION['user_id'], "Pending")) :
-
-  $invitation = (new InterviewModel())->getInterviewInvitation($_SESSION['user_id']);
-  $invitation_time = (new InterviewModel())->getInterviewInvitationTime($invitation->interview_id);
-?>
+<?php elseif ((new InterviewModel())->checkInterviewInvitationStatus($_SESSION['user_id'], "Pending")) :
+    $invitation = (new InterviewModel())->getInterviewInvitation($_SESSION['user_id']);
+    $invitation_time = (new InterviewModel())->getInterviewInvitationTime($invitation->interview_id);
+    ?>
 
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="px-8 py-6 mt-4 text-left bg-white shadow-lg">
@@ -93,12 +91,11 @@ if ((new CVModel)->checkIfPendingCVExists($_SESSION['user_id'])) : ?>
 
 
 <?php else :
+    include './app/Models/PositionModel.php';
 
-  require './app/Models/PositionModel.php';
+    $positions = (new PositionModel())->getAllPositions();
 
-  $positions = (new PositionModel())->getAllPositions();
-
-?>
+    ?>
 
   <!-- CV upload form -->
   <div class="flex items-center justify-center min-h-screen bg-gray-100">

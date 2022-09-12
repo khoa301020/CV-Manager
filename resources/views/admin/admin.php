@@ -1,6 +1,6 @@
 <?php
 if (!isset($_SESSION['admin'])) {
-  redirect("");
+    redirect("");
 }
 
 require './app/Models/CVModel.php';
@@ -10,8 +10,7 @@ require './app/Models/UserModel.php';
 // Check row count of CVs
 
 if ((new CVModel())->getAllCVs()) :
-
-  $cvs = (new CVModel())->getAllCVs(); ?>
+    $cvs = (new CVModel())->getAllCVs(); ?>
 
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="px-8 py-6 mt-4 bg-white shadow-lg">
@@ -39,10 +38,10 @@ if ((new CVModel())->getAllCVs()) :
                 <td class="p-3"><?php echo $cv->cv_id; ?></td>
                 <td class="p-3"><?php
                                 echo (new UserModel())->getUserById($cv->user_id)->name;
-                                ?></td>
+                ?></td>
                 <td class="p-3"><?php
                                 echo (new PositionModel())->getPositionById($cv->position_id)->position_name;
-                                ?></td>
+                ?></td>
                 <td class="p-3">
                   <img class="w-32" src="<?php echo $cv->cv_file; ?>" alt="">
                 </td>
