@@ -1,5 +1,5 @@
 <?php
-require_once './MailController.php';
+// require_once './MailController.php';
 require_once '../../Models/InterviewModel.php';
 require_once '../../../helpers/session.php';
 
