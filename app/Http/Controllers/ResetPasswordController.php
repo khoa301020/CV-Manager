@@ -21,9 +21,9 @@ class ResetPasswordController
     {
         //Validate username, email & phone number correct
         $user = [
-        'email' => trim($_POST['email']),
-        'username' => trim($_POST['username']),
-        'phone' => trim($_POST['phone']),
+            'email' => trim($_POST['email']),
+            'username' => trim($_POST['username']),
+            'phone' => trim($_POST['phone']),
         ];
 
         if ($this->UserModel->findUserByEmailOrUsernameOrPhone($user['email'], $user['username'], $user['phone'])) {
@@ -36,9 +36,9 @@ class ResetPasswordController
 
             //Mail data
             $mailData = [
-            'userEmail' => $user['email'],
-            'subject' => "Reset password request",
-            'message' => "Your reset link: " . $url,
+                'userEmail' => $user['email'],
+                'subject' => "Reset password request",
+                'message' => "Your reset link: <a href=\"" . $url . "\">here</a>",
             ];
 
             $mailController = new MailController();
@@ -77,9 +77,9 @@ class ResetPasswordController
                 if ($this->ResetPasswordModel->updatePassword($hashedPassword, $email)) {
                     //Send mail
                     $mailData = [
-                    'userEmail' => $email,
-                    'subject' => "Password reset",
-                    'message' => "Your password has been reset.",
+                        'userEmail' => $email,
+                        'subject' => "Password reset",
+                        'message' => "Your password has been reset.",
                     ];
 
                     $mailController = new MailController();
