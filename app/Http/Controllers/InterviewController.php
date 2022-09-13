@@ -16,6 +16,7 @@ class InterviewController
     public function acceptInvitation($id)
     {
         //Get current datetime
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $current_datetime = date('Y-m-d H:i:s');
         //Get invitation datetime
         $invitation_datetime = $this->interviewModel->getInterviewInvitationTime($id)[2];

@@ -32,6 +32,7 @@ class ResetPasswordModel
     {
         $this->db->query('SELECT * FROM resetpassword WHERE reset_selector = :selector AND expires_at >= :expires');
         $this->db->bind(':selector', $selector);
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
         $this->db->bind(':expires', date('Y-m-d H:i:s'));
 
         $row = $this->db->single();

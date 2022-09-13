@@ -32,6 +32,7 @@ class ResetPasswordController
             $token = random_bytes(32);
             $url = "http://cvmanager.test/new-password?selector=" . $selector . "&validator=" . bin2hex($token);
             //expires after 30 min
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
             $expires = date("Y-m-d H:i:s", time() + 1800);
 
             //Mail data
@@ -50,6 +51,8 @@ class ResetPasswordController
 
             //Redirect to login page
             redirect('login');
+        } else {
+            redirect("forgot-password");
         }
     }
 
@@ -87,8 +90,10 @@ class ResetPasswordController
 
                     redirect("login");
                 } else {
-                    die('Something went wrong');
+                    die('Something went wrong.');
                 }
+            } else {
+                die('Wrong password confirm, back to login page. Please open the provided password reset link again.');
             }
         }
     }
